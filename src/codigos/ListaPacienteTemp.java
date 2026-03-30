@@ -1,3 +1,4 @@
+package codigos;
 public class ListaPacienteTemp {
     
     NoPacienteTemp head;

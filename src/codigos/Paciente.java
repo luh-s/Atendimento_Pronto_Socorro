@@ -1,3 +1,4 @@
+package codigos;
 public class Paciente {
     private int id,idade;
     private String nome,cpf,prioridade,sintomas,statusAtendimento;
