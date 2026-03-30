@@ -1,5 +1,7 @@
 package codigos;
+
 public class Atendimento {
+
     private String idAtendimento;
     private Paciente paciente;
     private String medico;
@@ -14,8 +16,8 @@ public class Atendimento {
         this.paciente = paciente;
         this.medico = medico;
         this.horarioEntrada = horarioEntrada;
-        this.horarioAtendimento = horarioAtendimento;
-        this.status = status;
+        this.horarioAtendimento = "";
+        this.status = "Pendente";
     }
 
 
@@ -78,10 +80,29 @@ public class Atendimento {
         this.status = status;
     }
 
-    
+     public void iniciarAtendimento(String horarioAtual) {
+        this.horarioAtendimento = horarioAtual;
+        this.status = "Em andamento";
+    }
 
-    
-    
-    
+    public void finalizarAtendimento(String horarioAtual) {
+        this.horarioAtendimento = horarioAtual;
+        this.status = "Finalizado";
+    }
 
+    public void cancelarAtendimento() {
+        this.status = "Cancelado";
+    }
+
+      public void mostrarAtendimento() {
+        System.out.println("=== Atendimento ===");
+        System.out.println("ID: " + idAtendimento);
+        System.out.println("Paciente: " + paciente.getNome());
+        System.out.println("Médico: " + medico);
+        System.out.println("Horário Entrada: " + horarioEntrada);
+        System.out.println("Horário Atendimento: " + horarioAtendimento);
+        System.out.println("Status: " + status);
+        System.out.println("===================");
+    }
+    
 }
