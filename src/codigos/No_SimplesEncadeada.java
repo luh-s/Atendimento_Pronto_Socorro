@@ -1,3 +1,4 @@
+package codigos;
 public class No_SimplesEncadeada {
     String dado;
     No_SimplesEncadeada proximo;

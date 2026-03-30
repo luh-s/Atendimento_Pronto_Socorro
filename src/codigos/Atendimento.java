@@ -1,3 +1,4 @@
+package codigos;
 public class Atendimento {
     private String idAtendimento;
     private Paciente paciente;

@@ -1,3 +1,4 @@
+package codigos;
 public class Prontuario {
     private int idProntuario;
     private Paciente paciente;

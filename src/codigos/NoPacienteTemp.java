@@ -1,3 +1,4 @@
+package codigos;
 public class NoPacienteTemp {
     Paciente dados;
     NoPacienteTemp proximo = null;

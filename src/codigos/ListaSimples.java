@@ -1,3 +1,4 @@
+package codigos;
 public class ListaSimples {
     No_SimplesEncadeada inicio;
 
