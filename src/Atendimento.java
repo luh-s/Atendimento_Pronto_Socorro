@@ -8,7 +8,7 @@ public class Atendimento {
 
 
     public Atendimento(String idAtendimento, Paciente paciente, String medico, String horarioEntrada,
-            String horarioAtendimento, String status) {
+        String horarioAtendimento, String status) {
         this.idAtendimento = idAtendimento;
         this.paciente = paciente;
         this.medico = medico;

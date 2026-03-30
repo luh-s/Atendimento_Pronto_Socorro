@@ -53,13 +53,11 @@ public class Paciente {
     public void setStatusAtendimento(String statusAtendimento) {
         this.statusAtendimento = statusAtendimento;
     }
-
-
-    public void cadastrar(){
-        
+    public void cadastrar(ListaPacienteTemp lista){
+        lista.inserir(this);
     }
     public void atualizarDados(){
-
+        
     }
     public void exibirDados(){
         System.out.println("-----------------------------\nId: "+getId()+"\nPrioridade: "+getPrioridade()+"\nPaciente: "+getNome()+"\nIdade: "+getIdade()+"\nCpf: "+getCpf()+
