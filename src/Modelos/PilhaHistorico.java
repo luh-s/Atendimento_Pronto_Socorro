@@ -1,35 +1,40 @@
 package Modelos;
 
-import Estruturas.Filas.*;
-import Estruturas.Listas.*;
-import Estruturas.Pilhas.*;
-
 public class PilhaHistorico {
 
-    private NoListaPacientes topo;
+    private static class NoAtendimento {
+        Atendimento dado;
+        NoAtendimento proximo;
 
-    public void push(Paciente paciente) {
-        NoListaPacientes novo = new NoListaPacientes(paciente);
+        NoAtendimento(Atendimento dado) {
+            this.dado = dado;
+            this.proximo = null;
+        }
+    }
+
+    private NoAtendimento topo;
+
+    public void push(Atendimento atendimento) {
+        NoAtendimento novo = new NoAtendimento(atendimento);
         novo.proximo = topo;
         topo = novo;
     }
 
-    public Paciente pop() {
+    public Atendimento pop() {
         if (topo == null) {
             return null;
         }
 
-        Paciente paciente = topo.dados;
+        Atendimento atendimento = topo.dado;
         topo = topo.proximo;
-        return paciente;
+        return atendimento;
     }
 
-    public Paciente peek() {
+    public Atendimento peek() {
         if (topo == null) {
             return null;
         }
-
-        return topo.dados;
+        return topo.dado;
     }
 
     public boolean estaVazia() {
@@ -41,24 +46,20 @@ public class PilhaHistorico {
             return "Nenhum atendimento finalizado.";
         }
 
-        String texto = "";
-        NoListaPacientes atual = topo;
+        StringBuilder texto = new StringBuilder();
+        NoAtendimento atual = topo;
+        int posicao = 1;
 
         while (atual != null) {
-            Paciente p = atual.dados;
-
-            texto += "------------------------------\n";
-            texto += "Nome: " + p.getNome() + "\n";
-            texto += "ID: " + p.getId() + "\n";
-            texto += "Idade: " + p.getIdade() + "\n";
-            texto += "CPF: " + p.getCpf() + "\n";
-            texto += "Prioridade: " + p.getPrioridade() + "\n";
-            texto += "Sintomas: " + p.getSintomas() + "\n";
-            texto += "Status: " + p.getStatusAtendimento() + "\n";
-
+            Atendimento atendimento = atual.dado;
+            texto.append(posicao)
+                 .append("º atendimento finalizado\n")
+                 .append(atendimento.exibirResumo())
+                 .append("\n-----------------------------\n");
             atual = atual.proximo;
+            posicao++;
         }
 
-        return texto;
+        return texto.toString();
     }
 }

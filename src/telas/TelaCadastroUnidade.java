@@ -1,9 +1,7 @@
 package Telas;
 
 import javax.swing.*;
-
 import Modelos.*;
-
 import java.awt.*;
 
 public class TelaCadastroUnidade extends JFrame {
@@ -11,9 +9,12 @@ public class TelaCadastroUnidade extends JFrame {
     private JTextField campoNome;
     private JPasswordField campoSenha;
 
+
+
     public TelaCadastroUnidade(ArrayUnidades unidades) {
         this.unidades = unidades;
 
+        // INICIO PERSONALIZAÇÃO DO SWING//
         setTitle("Cadastro de Unidade");
         setSize(520, 360);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -68,7 +69,10 @@ public class TelaCadastroUnidade extends JFrame {
 
         gbc.gridy = 5;
         card.add(voltar, gbc);
+        //FIM PERSONALIZAÇÃO//
 
+
+        //BUTÕES E LÓGICA//
         salvar.addActionListener(e -> {
             String nome = campoNome.getText().trim();
             String senha = new String(campoSenha.getPassword());

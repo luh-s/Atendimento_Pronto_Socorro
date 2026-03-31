@@ -1,4 +1,5 @@
 package Modelos;
+
 public class Fila {
     private NoFila inicio;
     private NoFila fim;
@@ -10,29 +11,44 @@ public class Fila {
         this.tamanho = 0;
     }
 
-     private int getPrioridadeNum(String prioridade) {
+    private int getPrioridadeNum(String prioridade) {
+        if (prioridade == null) return 0;
         if (prioridade.equalsIgnoreCase("alta")) return 3;
         if (prioridade.equalsIgnoreCase("media")) return 2;
         if (prioridade.equalsIgnoreCase("baixa")) return 1;
-        return 0; 
+        return 0;
     }
 
     public void enfileirar(Paciente paciente) {
         NoFila novoNo = new NoFila(paciente);
-        if (fim == null || getPrioridadeNum(paciente.getPrioridade()) > getPrioridadeNum(fim.paciente.getPrioridade())) {
+
+        if (inicio == null) {
             inicio = novoNo;
             fim = novoNo;
-        } else {
-            NoFila atual = inicio;
-            while (atual.proximo != null && getPrioridadeNum(atual.proximo.paciente.getPrioridade()) >= getPrioridadeNum(paciente.getPrioridade())) {
-                atual = atual.proximo;
-            }
-            novoNo.proximo = atual.proximo;
-            atual.proximo = novoNo;
-            if (novoNo.proximo == null) {
-                fim = novoNo; 
-            }          
+            tamanho++;
+            return;
         }
+
+        if (getPrioridadeNum(paciente.getPrioridade()) > getPrioridadeNum(inicio.paciente.getPrioridade())) {
+            novoNo.proximo = inicio;
+            inicio = novoNo;
+            tamanho++;
+            return;
+        }
+
+        NoFila atual = inicio;
+        while (atual.proximo != null &&
+               getPrioridadeNum(atual.proximo.paciente.getPrioridade()) >= getPrioridadeNum(paciente.getPrioridade())) {
+            atual = atual.proximo;
+        }
+
+        novoNo.proximo = atual.proximo;
+        atual.proximo = novoNo;
+
+        if (novoNo.proximo == null) {
+            fim = novoNo;
+        }
+
         tamanho++;
     }
 
@@ -40,23 +56,46 @@ public class Fila {
         if (inicio == null) {
             return null;
         }
-        Paciente pacienteDesenfileirado = inicio.paciente;
+
+        Paciente removido = inicio.paciente;
         inicio = inicio.proximo;
+
         if (inicio == null) {
-            fim = null; 
+            fim = null;
         }
+
         tamanho--;
-        return pacienteDesenfileirado;
+        return removido;
     }
 
-    public void exibirFila() {
-        NoFila atual = inicio;
-        System.out.print("Fila: ");
-        while (atual != null) {
-            System.out.print(atual.paciente + " -> ");
-            atual = atual.proximo;
+    public boolean estaVazia() {
+        return inicio == null;
+    }
+
+    public int getTamanho() {
+        return tamanho;
+    }
+
+    public String exibirFilaTexto() {
+        if (inicio == null) {
+            return "Fila vazia.";
         }
-        System.out.println("null");
-    }
 
+        String texto = "";
+        NoFila atual = inicio;
+        int posicao = 1;
+
+        while (atual != null) {
+            Paciente p = atual.paciente;
+            texto += posicao + "º - "
+                    + p.getNome()
+                    + " | Prioridade: " + p.getPrioridade()
+                    + " | Status: " + p.getStatusAtendimento()
+                    + "\n";
+            atual = atual.proximo;
+            posicao++;
+        }
+
+        return texto;
+    }
 }

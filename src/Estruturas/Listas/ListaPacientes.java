@@ -1,9 +1,10 @@
 package Estruturas.Listas;
-import Modelos.*;
+
+import Modelos.Paciente;
 
 public class ListaPacientes {
 
-    NoListaPacientes head;
+    private NoListaPacientes head;
 
     public void inserir(Paciente paciente) {
         NoListaPacientes novo = new NoListaPacientes(paciente);
@@ -11,13 +12,21 @@ public class ListaPacientes {
         head = novo;
     }
 
-    public void mostrar() {
+    public Paciente buscarPorCpf(String cpf) {
         NoListaPacientes atual = head;
 
         while (atual != null) {
-            System.out.println(atual.dados.getNome());
+            if (atual.dados.getCpf().equals(cpf)) {
+                return atual.dados;
+            }
             atual = atual.proximo;
         }
+
+        return null;
+    }
+
+    public boolean contemCpf(String cpf) {
+        return buscarPorCpf(cpf) != null;
     }
 
     public boolean estaVazia() {
@@ -29,24 +38,23 @@ public class ListaPacientes {
             return "Nenhum paciente cadastrado nesta unidade.";
         }
 
-        String texto = "";
+        StringBuilder texto = new StringBuilder();
         NoListaPacientes atual = head;
 
         while (atual != null) {
             Paciente p = atual.dados;
-
-            texto += "ID: " + p.getId()
-                    + " | Nome: " + p.getNome()
-                    + " | Idade: " + p.getIdade()
-                    + " | CPF: " + p.getCpf()
-                    + " | Prioridade: " + p.getPrioridade()
-                    + " | Sintomas: " + p.getSintomas()
-                    + " | Status: " + p.getStatusAtendimento()
-                    + "\n";
+            texto.append("ID: ").append(p.getId())
+                 .append(" | Nome: ").append(p.getNome())
+                 .append(" | Idade: ").append(p.getIdade())
+                 .append(" | CPF: ").append(p.getCpf())
+                 .append(" | Prioridade: ").append(p.getPrioridade())
+                 .append(" | Sintomas: ").append(p.getSintomas())
+                 .append(" | Status: ").append(p.getStatusAtendimento())
+                 .append("\n");
 
             atual = atual.proximo;
         }
 
-        return texto;
+        return texto.toString();
     }
 }
