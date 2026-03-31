@@ -1,10 +1,8 @@
-package telas;
+package Telas;
 
 import javax.swing.*;
+import Modelos.*;
 import java.awt.*;
-import java.awt.event.*;
-
-import codigos.*;
 
 public class TelaLogin extends JFrame {
     private ArrayUnidades unidades;
@@ -12,67 +10,78 @@ public class TelaLogin extends JFrame {
     private JPasswordField campoSenha;
 
     public TelaLogin(ArrayUnidades unidades) {
-        this.unidades=unidades;
-        setTitle("Sistema de Saúde");
-        setSize(500, 350);
+        this.unidades = unidades;
+
+        setTitle("Sistema de Saúde - Login");
+        setSize(520, 360);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Painel principal com cor moderna
-        JPanel painel = new JPanel();
-        painel.setBackground(new Color(30, 30, 60));
-        painel.setLayout(null);
-        add(painel);
+        JPanel painelBase = EstiloTelas.criarPainelBase();
+        add(painelBase);
 
-        JLabel titulo = new JLabel("SISTEMA CSUS (cesupa sus)");
-        titulo.setBounds(100, 20, 400, 30);
-        titulo.setForeground(Color.WHITE);
-        titulo.setFont(new Font("Arial", Font.BOLD, 22));
-        painel.add(titulo);
+        JPanel card = EstiloTelas.criarCard();
+        painelBase.add(card);
 
-        JLabel labelUsuario = new JLabel("Unidade:");
-        labelUsuario.setBounds(100, 80, 100, 25);
-        labelUsuario.setForeground(Color.WHITE);
-        painel.add(labelUsuario);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        campoUsuario = new JTextField();
-        campoUsuario.setBounds(200, 80, 180, 30);
-        painel.add(campoUsuario);
+        JLabel titulo = EstiloTelas.criarTitulo("Sistema CSUS");
+        JLabel subtitulo = EstiloTelas.criarSubtitulo("Acesse com o nome e a senha da unidade");
 
-        JLabel labelSenha = new JLabel("Senha:");
-        labelSenha.setBounds(100, 130, 100, 25);
-        labelSenha.setForeground(Color.WHITE);
-        painel.add(labelSenha);
+        campoUsuario = EstiloTelas.criarCampo();
+        campoSenha = EstiloTelas.criarCampoSenha();
 
-        campoSenha = new JPasswordField();
-        campoSenha.setBounds(200, 130, 180, 30);
-        painel.add(campoSenha);
+        JButton botaoLogin = EstiloTelas.criarBotaoPrimario("Entrar");
+        JButton botaoCadastro = EstiloTelas.criarBotaoSecundario("Cadastrar Unidade");
 
-        JButton botaoLogin = new JButton("Entrar");
-        botaoLogin.setBounds(200, 180, 180, 35);
-        botaoLogin.setBackground(new Color(70, 130, 180));
-        botaoLogin.setForeground(Color.WHITE);
-        painel.add(botaoLogin);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        card.add(titulo, gbc);
 
-        JButton botaoCadastro = new JButton("Cadastrar Unidade");
-        botaoCadastro.setBounds(200, 230, 180, 30);
-        painel.add(botaoCadastro);
+        gbc.gridy = 1;
+        card.add(subtitulo, gbc);
 
-        // LOGIN
+        gbc.gridwidth = 1;
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        card.add(EstiloTelas.criarLabel("Unidade:"), gbc);
+
+        gbc.gridx = 1;
+        card.add(campoUsuario, gbc);
+
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        card.add(EstiloTelas.criarLabel("Senha:"), gbc);
+
+        gbc.gridx = 1;
+        card.add(campoSenha, gbc);
+
+        gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        card.add(botaoLogin, gbc);
+
+        gbc.gridy = 5;
+        card.add(botaoCadastro, gbc);
+
         botaoLogin.addActionListener(e -> {
-            String usuario = campoUsuario.getText();
+            String usuario = campoUsuario.getText().trim();
             String senha = new String(campoSenha.getPassword());
+
+            UnidadeAtendimento unidade = unidades.retorno(usuario, senha);
 
             if (unidades.verificar(usuario, senha)) {
                 JOptionPane.showMessageDialog(null, "Login realizado!");
-                new TelaPrincipal();
+                new TelaPrincipal(unidade, unidades);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Dados inválidos!");
             }
         });
 
-        // IR PARA CADASTRO
         botaoCadastro.addActionListener(e -> {
             new TelaCadastroUnidade(unidades);
             dispose();

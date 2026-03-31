@@ -1,62 +1,95 @@
-package telas;
+package Telas;
 
 import javax.swing.*;
+import Modelos.*;
 import java.awt.*;
-import codigos.*;
 
 public class TelaCadastroUnidade extends JFrame {
     private ArrayUnidades unidades;
     private JTextField campoNome;
     private JPasswordField campoSenha;
 
+
+
     public TelaCadastroUnidade(ArrayUnidades unidades) {
-        this.unidades=unidades;
+        this.unidades = unidades;
+
+        // INICIO PERSONALIZAÇÃO DO SWING//
         setTitle("Cadastro de Unidade");
-        setSize(500, 350);
+        setSize(520, 360);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel painel = new JPanel();
-        painel.setBackground(new Color(40, 40, 80));
-        painel.setLayout(null);
-        add(painel);
+        JPanel painelBase = EstiloTelas.criarPainelBase();
+        add(painelBase);
 
-        JLabel titulo = new JLabel("Cadastrar Unidade");
-        titulo.setBounds(150, 20, 250, 30);
-        titulo.setForeground(Color.WHITE);
-        titulo.setFont(new Font("Arial", Font.BOLD, 18));
-        painel.add(titulo);
+        JPanel card = EstiloTelas.criarCard();
+        painelBase.add(card);
 
-        JLabel labelNome = new JLabel("Nome:");
-        labelNome.setBounds(100, 80, 100, 25);
-        labelNome.setForeground(Color.WHITE);
-        painel.add(labelNome);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        campoNome = new JTextField();
-        campoNome.setBounds(200, 80, 180, 30);
-        painel.add(campoNome);
+        JLabel titulo = EstiloTelas.criarTitulo("Cadastrar Unidade");
+        JLabel subtitulo = EstiloTelas.criarSubtitulo("Crie uma nova unidade para login no sistema");
 
-        JLabel labelSenha = new JLabel("Senha:");
-        labelSenha.setBounds(100, 130, 100, 25);
-        labelSenha.setForeground(Color.WHITE);
-        painel.add(labelSenha);
+        campoNome = EstiloTelas.criarCampo();
+        campoSenha = EstiloTelas.criarCampoSenha();
 
-        campoSenha = new JPasswordField();
-        campoSenha.setBounds(200, 130, 180, 30);
-        painel.add(campoSenha);
+        JButton salvar = EstiloTelas.criarBotaoPrimario("Salvar");
+        JButton voltar = EstiloTelas.criarBotaoSecundario("Voltar");
 
-        JButton salvar = new JButton("Salvar");
-        salvar.setBounds(200, 180, 180, 35);
-        painel.add(salvar);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        card.add(titulo, gbc);
 
-        JButton voltar = new JButton("Voltar");
-        voltar.setBounds(200, 230, 180, 30);
-        painel.add(voltar);
+        gbc.gridy = 1;
+        card.add(subtitulo, gbc);
 
+        gbc.gridwidth = 1;
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        card.add(EstiloTelas.criarLabel("Nome:"), gbc);
+
+        gbc.gridx = 1;
+        card.add(campoNome, gbc);
+
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        card.add(EstiloTelas.criarLabel("Senha:"), gbc);
+
+        gbc.gridx = 1;
+        card.add(campoSenha, gbc);
+
+        gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        card.add(salvar, gbc);
+
+        gbc.gridy = 5;
+        card.add(voltar, gbc);
+        //FIM PERSONALIZAÇÃO//
+
+
+        //BUTÕES E LÓGICA//
         salvar.addActionListener(e -> {
-            String nome = campoNome.getText();
+            String nome = campoNome.getText().trim();
             String senha = new String(campoSenha.getPassword());
-            JOptionPane.showMessageDialog(null, "Unidade cadastrada!");
-            unidades.cadastro(new UnidadeAtendimento(nome, senha));
+
+            if (nome.isEmpty() || senha.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha nome e senha.");
+                return;
+            }
+
+            if (unidades.verificar(nome, senha)) {
+                JOptionPane.showMessageDialog(null, "Nome de unidade já cadastrada!");
+            } else {
+                unidades.cadastro(new UnidadeAtendimento(nome, senha));
+                JOptionPane.showMessageDialog(null, "Unidade cadastrada!");
+                campoNome.setText("");
+                campoSenha.setText("");
+            }
         });
 
         voltar.addActionListener(e -> {
